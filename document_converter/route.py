@@ -1,5 +1,4 @@
 from io import BytesIO
-from multiprocessing.pool import AsyncResult
 from typing import List
 from fastapi import APIRouter, File, HTTPException, UploadFile, Query
 

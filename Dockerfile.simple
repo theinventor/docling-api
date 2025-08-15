@@ -1,0 +1,31 @@
+# Simple Dockerfile for Coolify deployment - CPU version
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    make \
+    libxml2-dev \
+    libxslt1-dev \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy project files
+COPY pyproject.toml poetry.lock ./
+COPY document_converter ./document_converter
+COPY worker ./worker
+COPY main_with_auth.py ./
+
+# Install Python dependencies
+RUN pip install --no-cache-dir poetry && \
+    poetry config virtualenvs.create false && \
+    poetry install --no-dev --no-interaction --no-ansi
+
+# Expose port
+EXPOSE 8000
+
+# Start the application
+CMD ["python", "main_with_auth.py"]

@@ -1,0 +1,30 @@
+# Simple Dockerfile without Redis dependency
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    make \
+    libxml2-dev \
+    libxslt1-dev \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python dependencies directly
+RUN pip install --no-cache-dir \
+    fastapi \
+    uvicorn \
+    python-multipart \
+    docling
+
+# Copy only the main application file
+COPY main_simple.py ./
+
+# Expose port
+EXPOSE 8000
+
+# Start the application
+CMD ["python", "main_simple.py"]

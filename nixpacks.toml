@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["python311", "gcc", "libxml2", "libxslt"]
+
+[phases.install]
+cmds = ["pip install fastapi uvicorn python-multipart docling"]
+
+[start]
+cmd = "python main_simple.py"
+
+[variables]
+PORT = "8000"
